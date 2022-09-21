@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import routes from './routes'
+import router from './routes/router'
 import { isListeningOn } from './util/isListeningOn'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
@@ -15,6 +15,6 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
 
-app.use('/api', routes)
+app.use('/api', router)
 
 app.listen(PORT, isListeningOn(PORT))
