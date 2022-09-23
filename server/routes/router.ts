@@ -5,10 +5,8 @@ import userRoutes from './user.routes'
 
 const router = Router()
 
-router.use('/ballots', ballotsRoutes)
-
 router.use('/auth', authRoutes)
-
+router.use('/ballots', ballotsRoutes)
 router.use('/user', userRoutes)
 
 export default router
