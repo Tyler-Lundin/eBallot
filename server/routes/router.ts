@@ -24,10 +24,28 @@
 *
 * Use VerifyAuthToken middleware to protect routes
 *
-* [USER] - /api/user 
-    * [GET] - /api/user/:id - get user data
-    * [PUT] - /api/user/:id - update user 
-    * [DELETE] - /api/user/:id - delete user 
+* [BALLOT] - /api/ballot
+    * [GET] - /api/ballot/feed - get feed of ballots
+    * [GET] - /api/ballot/:id - get ballot by id
+    * [POST] - /api/ballot - create ballot
+    * [PUT] - /api/ballot/:id - update ballot
+    * [DELETE] - /api/ballot/:id - delete ballot
+    * [POST] - /api/ballot/:id/vote - vote on ballot
+    * [POST] - /api/ballot/:id/unvote - unvote on ballot
+    * [POST] - /api/ballot/:id/comment - comment on ballot
+    * [POST] - /api/ballot/:id/uncomment - uncomment on ballot
+    * [POST] - /api/ballot/:id/share - share ballot
+* - - - - - - - - - - - - - - - - - - - - - - - - - 
+* [CHAT] - /api/chat 
+    * [GET] - /api/chat - get all chats meta data (last message, last message time, etc.)
+    * [GET] - /api/chat/:id - get chat messages
+    * [POST] - /api/chat - create chat 
+    * [POST] - /api/chat/:id - send chat message
+    * [DELETE] - /api/chat/:id - delete chat message if sender
+    * [POST] - /api/chat/:id/leave - leave chat
+    * [POST] - /api/chat/:id/join - join chat
+    * [POST] - /api/chat/:id/invite - invite user to chat
+    * [POST] - /api/chat/:id/kick - kick user from chat
 * - - - - - - - - - - - - - - - - - - - - - - - - - 
 * [COMMENT] - /api/comment 
     * [GET] - /api/comment/:id - get comment and replies 
@@ -44,22 +62,16 @@
     * [GET] - /api/friend/cancel/:id - cancel friend request
     * [GET] - /api/friend/:id - get friend by id
 * - - - - - - - - - - - - - - - - - - - - - - - - - 
-* [CHAT] - /api/chat 
-    * [GET] - /api/chat - get all chats meta data (last message, last message time, etc.)
-    * [GET] - /api/chat/:id - get chat messages
-    * [POST] - /api/chat - create chat 
-    * [POST] - /api/chat/:id - send chat message
-    * [DELETE] - /api/chat/:id - delete chat message if sender
-    * [POST] - /api/chat/:id/leave - leave chat
-    * [POST] - /api/chat/:id/join - join chat
-    * [POST] - /api/chat/:id/invite - invite user to chat
-    * [POST] - /api/chat/:id/kick - kick user from chat
-* - - - - - - - - - - - - - - - - - - - - - - - - - 
 * [MESSAGE] - /api/message 
     * [GET] - /api/message - get all messages
     * [GET] - /api/message/:id - get message by id
     * [POST] - /api/message - send message
     * [DELETE] - /api/message/:id - delete message
+* - - - - - - - - - - - - - - - - - - - - - - - - - 
+* [USER] - /api/user 
+    * [GET] - /api/user/:id - get user data
+    * [PUT] - /api/user/:id - update user 
+    * [DELETE] - /api/user/:id - delete user 
 */
 
 import { Router } from 'express'
