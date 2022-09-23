@@ -29,14 +29,13 @@ const userSchema = new Schema<IUser>(
     },
     phoneNumber: {
       type: String,
-      required: true,
       unique: true,
       trim: true,
       minlength: 10,
+      default: '0000000000',
     },
     profilePhotoURL: {
       type: String,
-      required: true,
       default: '',
     },
     reactions: [
