@@ -1,3 +1,21 @@
+import { Router } from 'express'
+import ballotRoutes from './ballot.route'
+import authRoutes from './auth.route'
+import userRoutes from './user.route'
+import verifyAuthToken from '../middleware/verifyAuthToken'
+
+const router = Router()
+
+router.use('/auth', authRoutes)
+router.use('/ballot', verifyAuthToken, ballotRoutes)
+// router.use('/chat', verifyAuthToken, chatRoutes)
+// router.use('/comment', verifyAuthToken, commentRoutes)
+// router.use('/friend', verifyAuthToken, friendRoutes)
+// router.use('/message', verifyAuthToken, messageRoutes)
+router.use('/user', verifyAuthToken, userRoutes)
+
+export default router
+
 /*
 * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //             // U N A U T H O R I Z E D // R O U T E S //                      //
@@ -73,22 +91,3 @@
     * [PUT] - /api/user/:id - update user 
     * [DELETE] - /api/user/:id - delete user 
 */
-
-import { Router } from 'express'
-import ballotsRoutes from './ballot.routes'
-import authRoutes from './auth.routes'
-import userRoutes from './user.routes'
-import verifyAuthToken from '../middleware/verifyAuthToken'
-
-const router = Router()
-
-router.use('/auth', authRoutes)
-router.use('/ballots', verifyAuthToken, ballotsRoutes)
-router.use('/user', verifyAuthToken, userRoutes)
-// router.use('/comments', verifyAuthToken, commentsRoutes)
-// router.use('/vote', verifyAuthToken, voteRoutes)
-// router.use('/friends', verifyAuthToken, friendRoutes)
-// router.use('/requests', verifyAuthToken, requestRoutes)
-// router.use('/messages', verifyAuthToken, messageRoutes)
-
-export default router
