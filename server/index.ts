@@ -6,10 +6,14 @@ import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import errorhandler from 'errorhandler'
+import { ConnectDatabase } from './config/database'
 
 dotenv.config()
 const app = express()
+ConnectDatabase()
+
 const PORT = process.env.PORT || 3500
+
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
 app.use(express.json())
 app.use(bodyParser.json())
