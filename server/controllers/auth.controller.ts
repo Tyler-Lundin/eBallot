@@ -1,9 +1,12 @@
+/* AUTH CONTROLLER
+ * @collapse
+ *
+ */
 import { Request, Response } from 'express'
 import asyncHandler from 'express-async-handler'
 import User from '../models/user.model'
 import bcrypt from 'bcryptjs'
-import jwt, { Secret } from 'jsonwebtoken'
-import { IUser } from '../types'
+import genAuthToken from '../util/genAuthToken'
 
 export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   const { username, password } = req.body
@@ -14,14 +17,21 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   }
 })
 
-function genAuthToken(user: IUser) {
-  if (!user) return
-  const userPayload = {
-    id: user._id,
-    username: user.username,
-    email: user.email,
+export const registerUser = asyncHandler(async (req: Request, res: Response) => {
+  const { username, email, password } = req.body
+  const userExists = await User.findOne({ $or: [{ username }, { email }] })
+  if (userExists) {
+    res.status(400)
+    throw new Error('User already exists')
   }
-  return jwt.sign(userPayload, process.env.JWT_SECRET as Secret, {
-    expiresIn: process.env.JWT_EXPIRE,
+  const user = await User.create({
+    username,
+    email,
+    password: bcrypt.hash(password, 10),
   })
-}
+  if (user) {
+    const authToken = genAuthToken(user)
+    res.json({ authToken })
+  }
+  res.status(500).json({ message: 'Server error' })
+})

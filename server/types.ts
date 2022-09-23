@@ -5,6 +5,9 @@
  */
 import mongoose, { Schema, SchemaTimestampsConfig } from 'mongoose'
 
+export interface IErrors {
+  [key: string]: string
+}
 export interface IBallot extends mongoose.Document {
   userID: userID
   title: title
