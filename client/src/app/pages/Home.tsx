@@ -38,7 +38,6 @@ function Home() {
       </HomeBottom>
     </HomeContainer>
   );
-}
 
 export default Home;
 

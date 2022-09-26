@@ -1,7 +1,13 @@
-import { Schema } from 'mongoose'
+import mongoose, { Schema } from 'mongoose'
+import { IBallot } from '../types'
 
-const BallotSchema = new Schema(
+const BallotSchema = new Schema<IBallot>(
   {
+    userID: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
     title: {
       type: String,
       required: true,
@@ -11,12 +17,17 @@ const BallotSchema = new Schema(
       required: true,
     },
     options: {
-      type: [String],
+      type: [
+        {
+          title: String,
+          votes: Number,
+        },
+      ],
       required: true,
     },
-    votes: {
-      type: [Number],
-      required: true,
+    comments: {
+      type: Array<Schema.Types.ObjectId>(),
+      ref: 'Comment',
     },
   },
   {
@@ -24,4 +35,6 @@ const BallotSchema = new Schema(
   }
 )
 
-export default BallotSchema
+const Ballot = mongoose.model<IBallot>('Ballot', BallotSchema)
+
+export default Ballot

@@ -3,10 +3,12 @@ import asyncHandler from 'express-async-handler'
 
 const router = Router()
 
-router.get(
-  '/feed',
+router.post(
+  '/login',
   asyncHandler(async (req: Request, res: Response) => {
-    res.status(200).json({ message: 'Route 1 Controller Works' })
+    const { email, password } = req.body
+    console.log(email, password)
+    res.status(200).json({ message: 'success' })
   })
 )
 

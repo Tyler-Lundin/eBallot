@@ -1,29 +1,67 @@
-import { Schema } from 'mongoose'
+/* User Schema
+ *
+ * @collapse - vscode extension to collapse code
+ */
+import mongoose, { Schema } from 'mongoose'
+import { IUser } from '../types'
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
 
-const UserSchema = new Schema(
+const userSchema = new Schema<IUser>(
   {
-    username: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     email: {
       type: String,
       required: true,
       unique: true,
+      lowercase: true,
+      trim: true,
+    },
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      minlength: 3,
     },
     password: {
       type: String,
       required: true,
     },
-    ballots: {
-      type: [Schema.Types.ObjectId],
-      ref: 'Ballot',
+    phoneNumber: {
+      type: String,
+      unique: true,
+      trim: true,
+      minlength: 10,
+      default: '0000000000',
     },
+    profilePhotoURL: {
+      type: String,
+      default: '',
+    },
+    reactions: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Reaction',
+      },
+    ],
+    requests: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Request',
+      },
+    ],
+    votes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Vote',
+      },
+    ],
   },
   {
     timestamps: true,
   }
 )
 
-export default UserSchema
+const User = mongoose.model<IUser>('User', userSchema)
+
+export default User
