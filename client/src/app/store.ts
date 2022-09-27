@@ -1,7 +1,14 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
+import authSlice from './features/auth/authSlice'
+import navSlice from './features/nav/navSlice'
+import themeSlice from './features/theme/themeSlice'
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    nav: navSlice,
+    auth: authSlice,
+    theme: themeSlice,
+  },
 })
 
 export type AppDispatch = typeof store.dispatch
