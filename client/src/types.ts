@@ -1,6 +1,37 @@
 export interface IErrors {
   [key: string]: string
 }
+
+export interface ITheme {
+  name: string
+  colors: {
+    primary: string
+    secondary: string
+    success: string
+    info: string
+    warning: string
+    danger: string
+    light: string
+    dark: string
+  }
+  fonts: {
+    primary: string
+    secondary: string
+  }
+  fontSizes: {
+    xs: string
+    s: string
+    m: string
+    l: string
+    xl: string
+    xxl: string
+    xxxl: string
+  }
+}
+
+export interface IThemeState {
+  currentTheme: ITheme
+}
 export interface IBallot {
   _id: ballotID
   ballotStats: ballotStats
@@ -222,4 +253,45 @@ export type appStats = {
   totalReactions: number
   totalFriends: number
   totalMessages: number
+}
+
+export type links = {
+  to: string
+  label: string
+}[]
+
+export interface IRegisterForm {
+  username: string
+  email: string
+  password: string
+  passwordConfirm: string
+}
+
+export interface ILoginForm {
+  username: string
+  password: string
+}
+
+export interface IAuthState {
+  user: IUser | null
+  authenticated: boolean
+  loading: boolean
+  error: string | string[] | null
+  register: {
+    form: IRegisterForm
+    loading: boolean
+    error: string | string[] | null
+  }
+  login: {
+    form: ILoginForm
+    loading: boolean
+    error: string | string[] | null
+  }
+}
+
+export interface IRegisterFieldFocused {
+  username: boolean
+  email: boolean
+  password: boolean
+  passwordConfirm: boolean
 }
