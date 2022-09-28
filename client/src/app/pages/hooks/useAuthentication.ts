@@ -8,6 +8,7 @@ const useAuthentication = () => {
   useEffect(() => {
     if (authenticated) navTo('/dashboard')
   }, [authenticated])
+  return { authenticated }
 }
 
 export default useAuthentication
