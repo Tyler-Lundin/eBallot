@@ -132,6 +132,7 @@ export interface IVote {
 export type createdAt = Date
 export type expiresAt = Date
 export type updatedAt = Date
+export type error = string | string[] | null
 
 export type chatName = string
 export type description = string
@@ -276,22 +277,22 @@ export interface IAuthState {
   user: IUser | null
   authenticated: boolean
   loading: boolean
-  error: string | string[] | null
+  error: error
   register: {
     form: IRegisterForm
     loading: boolean
-    error: string | string[] | null
+    error: error
   }
   login: {
     form: ILoginForm
     loading: boolean
-    error: string | string[] | null
+    error: error
   }
 }
 
-export interface IRegisterFieldFocused {
-  username: boolean
-  email: boolean
-  password: boolean
-  passwordConfirm: boolean
+export interface IFocusedFields {
+  username?: boolean
+  email?: boolean
+  password?: boolean
+  passwordConfirm?: boolean
 }
