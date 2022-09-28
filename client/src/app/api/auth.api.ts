@@ -17,9 +17,18 @@ const registerUser = createAsyncThunk('auth/register', async (form: IRegisterFor
   }
 })
 
-const loginUser = createAsyncThunk('auth/loginUser', async (form: ILoginForm) => {
-  const response = await axios.post('/api/auth/login')
-  return response.data
+const loginUser = createAsyncThunk('auth/loginUser', async (form: ILoginForm, thunkAPI) => {
+  try {
+    const response = await axios.post('/api/auth/login', form)
+    console.log('response: ', response)
+    console.log('response.data: ', response.data)
+    if (response.status > 200 && response.status < 300) {
+      return response.data
+    }
+  } catch (error: any) {
+    console.log('error: ', error)
+    return thunkAPI.rejectWithValue(error.response.data.message)
+  }
 })
 
 export { registerUser, loginUser }
