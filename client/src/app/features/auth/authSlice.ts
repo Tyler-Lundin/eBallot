@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { IAuthState } from '../../../types'
-import { registerUser } from '../../api/auth.api'
+import { loginUser, registerUser } from '../../api/auth.api'
 
 const initialState: IAuthState = {
   user: null,
@@ -37,6 +37,18 @@ const authSlice = createSlice({
     setLoginForm(state, action) {
       state.login.form = action.payload
     },
+    clearLoginError(state) {
+      state.login.error = null
+    },
+    clearRegisterError(state) {
+      state.register.error = null
+    },
+    setRegisterError(state, action) {
+      state.register.error = action.payload
+    },
+    setLoginError(state, action) {
+      state.login.error = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -55,8 +67,32 @@ const authSlice = createSlice({
         state.register.loading = false
         state.register.error = action.payload as string
       })
+
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.login.loading = false
+        state.login.error = null
+        state.authenticated = true
+      })
+
+      .addCase(loginUser.pending, (state) => {
+        state.login.loading = true
+        state.login.error = null
+      })
+
+      .addCase(loginUser.rejected, (state, action) => {
+        console.log('reject error: ', action.payload)
+        state.login.loading = false
+        state.login.error = action.payload as string
+      })
   },
 })
 
-export const { setRegisterForm, setLoginForm } = authSlice.actions
+export const {
+  setRegisterForm,
+  setLoginForm,
+  clearLoginError,
+  clearRegisterError,
+  setLoginError,
+  setRegisterError,
+} = authSlice.actions
 export default authSlice.reducer
