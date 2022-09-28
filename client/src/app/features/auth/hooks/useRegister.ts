@@ -1,13 +1,12 @@
-import { FormEvent, useState } from 'react'
-import { IRegisterFieldFocused, IRegisterForm } from '../../../../types'
+import React, { ChangeEvent, useEffect, useState } from 'react'
+import { IFocusedFields, IRegisterForm } from '../../../../types'
 import { registerUser } from '../../../api/auth.api'
 import { useAppDispatch, useAuthState } from '../../../hooks'
-import isValidEmail from '../../../util/isValidEmail'
-import { setRegisterForm } from '../authSlice'
+import isValidForm from '../../../util/isValidForm'
+import { clearRegisterError, setRegisterError, setRegisterForm } from '../authSlice'
 
 const useRegister = () => {
-  const [buttonClicked, setButtonClicked] = useState(false)
-  const [focused, setFocused] = useState<IRegisterFieldFocused>({
+  const [focused, setFocused] = useState<IFocusedFields>({
     username: false,
     email: false,
     password: false,
@@ -15,71 +14,58 @@ const useRegister = () => {
   })
 
   const { register } = useAuthState()
+  const { form, loading, error } = register
   const dispatch = useAppDispatch()
   const handleUpdateForm = (form: IRegisterForm) => dispatch(setRegisterForm(form))
 
+  useEffect(() => {
+    error && setTimeout(() => dispatch(clearRegisterError()), 5000)
+  }, [error])
   const onSubmit = () => {
-    setButtonClicked(true)
-    if (
-      isValidEmail(register.form.email) &&
-      register.form.password === register.form.passwordConfirm
-    ) {
-      dispatch(registerUser(register.form))
-    }
+    dispatch(
+      isValidForm.register(form)
+        ? registerUser(form)
+        : setRegisterError(' Please fill out all fields')
+    )
   }
 
-  const handleFocus = (name: string) => {
-    setFocused((prev) => ({ ...prev, [name]: true }))
-  }
+  const handleFocus = (name: string) => setFocused((prev: any) => ({ ...prev, [name]: true }))
 
-  const handleBlur = (name: string) => {
-    setFocused((prev) => ({ ...prev, [name]: false }))
-  }
+  const handleBlur = (name: string) => setFocused((prev: any) => ({ ...prev, [name]: false }))
 
   const FIELDS = [
     {
       name: 'email',
       label: 'Email',
       type: 'email',
-      required: true,
-      value: register.form.email,
-      focused: focused.email,
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-        handleUpdateForm({ ...register.form, email: e.target.value }),
     },
     {
       name: 'username',
       label: 'Username',
       type: 'text',
-      required: true,
-      value: register.form.username,
-      focused: focused.username,
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-        handleUpdateForm({ ...register.form, username: e.target.value }),
     },
     {
       name: 'password',
       label: 'Password',
       type: 'password',
-      required: true,
-      value: register.form.password,
-      focused: focused.password,
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-        handleUpdateForm({ ...register.form, password: e.target.value }),
     },
     {
       name: 'passwordConfirm',
       label: 'Confirm Password',
       type: 'password',
-      required: true,
-      value: register.form.passwordConfirm,
-      focused: focused.passwordConfirm,
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-        handleUpdateForm({ ...register.form, passwordConfirm: e.target.value }),
     },
   ]
 
-  return { FIELDS, handleUpdateForm, onSubmit, handleFocus, handleBlur, buttonClicked }
+  const formFields = FIELDS.map((field) => ({
+    ...field,
+    required: true,
+    value: form[field.name as keyof IRegisterForm],
+    focused: focused[field.name as keyof IFocusedFields],
+    onChange: (e: ChangeEvent<HTMLInputElement>) =>
+      handleUpdateForm({ ...form, [field.name]: e.target.value }),
+  }))
+
+  return { formFields, handleUpdateForm, onSubmit, handleFocus, handleBlur, error, loading }
 }
 
 export default useRegister
