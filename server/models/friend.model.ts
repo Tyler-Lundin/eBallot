@@ -1,6 +1,17 @@
 import mongoose, { Schema } from 'mongoose'
 import { IFriend } from '../types'
 
+// export interface IFriend extends mongoose.Document {
+//   userID: userID
+//   matchPercentage: matchPercentage
+//   interactionRate: interactionRate
+//   isFavorite: isFavorite
+//   nickname: nickname
+//   messageIDs: messageIDs
+//   createdAt: createdAt
+//   updatedAt: updatedAt
+// }
+
 const friendSchema = new Schema<IFriend>(
   {
     userID: {
@@ -13,7 +24,7 @@ const friendSchema = new Schema<IFriend>(
       required: true,
       default: 0,
     },
-    interactionRate: {
+    interactions: {
       type: Number,
       required: true,
       default: 0,
@@ -27,7 +38,7 @@ const friendSchema = new Schema<IFriend>(
       type: String,
       default: '',
     },
-    messages: [
+    messageIDs: [
       {
         type: Schema.Types.ObjectId,
         ref: 'Message',
