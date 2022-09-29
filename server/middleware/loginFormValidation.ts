@@ -3,10 +3,9 @@ import { IErrors } from '../types'
 
 export default function loginFormValidation(req: Request, res: Response, next: NextFunction) {
   const { username, password } = req.body
-
   const errors: IErrors = {}
   if (!username) {
-    errors.username = 'Username is required'
+    errors.username = 'Username or Email is required'
   }
   if (!password) {
     errors.password = 'Password is required'
@@ -16,5 +15,6 @@ export default function loginFormValidation(req: Request, res: Response, next: N
     res.status(400).json({ errors })
     throw new Error(JSON.stringify(errors))
   }
+
   next()
 }
