@@ -13,7 +13,7 @@ export interface IBallot extends mongoose.Document {
   userID: userID
   question: string
   options: options
-  commentIDs: commentIDs
+  comments: comments
   expiresAt: expiresAt
   createdAt: createdAt
   updatedAt: updatedAt
@@ -24,7 +24,7 @@ export interface IComment extends mongoose.Document {
   userID: userID
   parentID: parentID
   parentType: parentType
-  childrenIDs: commentIDs
+  children: comments
   comment: comment
   reactions: reactions
   createdAt: createdAt
@@ -34,8 +34,8 @@ export interface IComment extends mongoose.Document {
 export interface IChat extends mongoose.Document {
   chatStats: chatStats
   chatName: chatName
-  messageIDs: messageIDs
-  userIDs: userIDs
+  messages: messages
+  users: users
 }
 
 export interface IFriend extends mongoose.Document {
@@ -44,7 +44,7 @@ export interface IFriend extends mongoose.Document {
   interactions: interactions
   isFavorite: isFavorite
   nickname: nickname
-  messageIDs: messageIDs
+  messages: messages
   createdAt: createdAt
   updatedAt: updatedAt
 }
@@ -76,15 +76,16 @@ export interface IUser extends mongoose.Document {
   userStats: userStats
   username: username
   email: email
-  password: password
+  password?: password
+  friends: friends
   phoneNumber: phoneNumber
   profilePhotoURL: profilePhotoURL
-  ballotIDs: ballotIDs
-  chatIDs: chatIDs
-  commentIDs: commentIDs
+  ballots: ballots
+  chats: chats
+  comments: comments
   reactions: reactions
-  requestIDs: requestIDs
-  voteIDs: voteIDs
+  requests: requests
+  votes: votes
   createdAt: createdAt
   updatedAt: updatedAt
 }
@@ -95,6 +96,12 @@ export interface IVote extends mongoose.Document {
   optionIndex: optionIndex
   createdAt: createdAt
   updatedAt: updatedAt
+}
+
+export interface IFriends {
+  friendRequests: friendRequests
+  friends: friends
+  favoriteFriends: favoriteFriends
 }
 
 // common
@@ -129,7 +136,7 @@ export type voterIDs = userID[]
 // COMMENT
 export type comment = string
 export type commentID = Schema.Types.ObjectId
-export type commentIDs = commentID[]
+export type comments = commentID[]
 export type comments = IComment[]
 export type parentID = ballotID | commentID | userID
 export type parentType = 'ballot' | 'comment' | 'user'
@@ -139,9 +146,17 @@ export type chatID = Schema.Types.ObjectId
 export type chatIDs = chatID[]
 export type chats = IChat[]
 
+// FRIENDS
+export type friendRequests = IRequest[]
+export type friends = IFriend[]
+export type favoriteFriends = IFriend[]
+export type isFavorite = boolean
+export type matchPercentage = number
+export type interactions = number
+
 // MESSAGE
 export type messageID = Schema.Types.ObjectId
-export type messageIDs = messageID[]
+export type messages = messageID[]
 export type messages = IMessage[]
 export type sender = Schema.Types.ObjectId
 export type MessageStatus = 'sent' | 'received' | 'read' | 'edited' | 'unsent'
@@ -158,12 +173,8 @@ export type requests = IRequest[]
 
 // USER
 export type userID = Schema.Types.ObjectId
-export type userIDs = userID[]
+export type users = userID[]
 export type users = IUser[]
-
-export type interactions = number
-export type isFavorite = boolean
-export type matchPercentage = number
 
 export type BallotOption = {
   title: title
