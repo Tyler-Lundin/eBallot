@@ -1,33 +1,69 @@
 import mongoose, { Schema } from 'mongoose'
-import { IBallot } from '../types'
+import { commentIDs, IBallot, userIDs } from '../types'
+
+// export interface IBallot extends mongoose.Document {
+//   ballotStats: ballotStats
+//   userID: userID
+//   question: string
+//   options: options
+//   commentIDs: commentIDs
+//   expiresAt: expiresAt
+//   createdAt: createdAt
+//   updatedAt: updatedAt
+// }
 
 const BallotSchema = new Schema<IBallot>(
   {
+    ballotStats: {
+      totalVotes: {
+        type: Number,
+        default: 0,
+      },
+      totalComments: {
+        type: Number,
+        default: 0,
+      },
+      totalReactions: {
+        type: Number,
+        default: 0,
+      },
+    },
     userID: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
-    title: {
-      type: String,
-      required: true,
-    },
-    description: {
+    question: {
       type: String,
       required: true,
     },
     options: {
       type: [
         {
-          title: String,
-          votes: Number,
+          index: {
+            type: Number,
+            required: true,
+          },
+          title: {
+            type: String,
+          },
+          voterIDs: {
+            type: Array<userIDs>(),
+            ref: 'User',
+          },
         },
       ],
       required: true,
     },
-    comments: {
-      type: Array<Schema.Types.ObjectId>(),
-      ref: 'Comment',
+    commentIDs: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Comment',
+      },
+    ],
+    expiresAt: {
+      type: Date,
+      required: true,
     },
   },
   {
