@@ -3,7 +3,9 @@ import { IErrors } from '../types'
 import validateEmail from '../util/validateEmail'
 
 export default function registerFormValidation(req: Request, res: Response, next: NextFunction) {
-  const { username, email, password, password2 } = req.body
+  // const { form } = req.body
+  const { username, email, password, passwordConfirm } = req.body
+  req.body.email = email.toLowerCase()
 
   const errors: IErrors = {}
   if (!username) {
@@ -20,11 +22,11 @@ export default function registerFormValidation(req: Request, res: Response, next
   if (!password) {
     errors.password = 'Password is required'
   }
-  if (!password2) {
-    errors.password2 = 'Password confirmation is required'
+  if (!passwordConfirm) {
+    errors.passwordConfirm = 'Password confirmation is required'
   }
-  if (password !== password2) {
-    errors.password2 = 'Passwords do not match'
+  if (password !== passwordConfirm) {
+    errors.passwordConfirm = 'Passwords do not match'
   }
   if (password && password.length < 6) {
     errors.password = 'Password must be at least 6 characters long'
