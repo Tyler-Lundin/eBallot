@@ -44,13 +44,13 @@ const userSchema = new Schema<IUser>(
         ref: 'Reaction',
       },
     ],
-    requests: [
+    requestIDs: [
       {
         type: Schema.Types.ObjectId,
         ref: 'Request',
       },
     ],
-    votes: [
+    voteIDs: [
       {
         type: Schema.Types.ObjectId,
         ref: 'Vote',
