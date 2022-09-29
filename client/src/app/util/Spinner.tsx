@@ -1,37 +1,36 @@
 import styled from 'styled-components'
-
+// $m = multiplier
 const Spinner = () => {
-  return <SPINNER />
+  return <SPINNER children={<SPINNER $m={0.9} children={<SPINNER $m={0.8} />} />} />
 }
 
 export default Spinner
 
-const SPINNER = styled.div`
-  height: 40px;
-  width: 40px;
+const SPINNER = styled.div<{ $m?: number }>`
+  height: ${({ $m }) => ($m ? $m * 240 : 240)}px;
+  width: ${({ $m }) => ($m ? $m * 240 : 240)}px;
   aspect-ratio: 1 / 1;
   background-color: black;
   border-radius: 25px 20px 20px 20px;
-  animation: spin 2s linear infinite, rainbow 3s linear infinite,
-    wave 5s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite;
+  /* border: 10px solid white; */
+  animation: spin ${({ $m }) => ($m ? $m * 3 : 3)}s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite,
+    rainbow ${({ $m }) => ($m ? $m * 18 : 18)}s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite,
+    wave ${({ $m }) => ($m ? $m * 3 : 3)}s cubic-bezier(0.175, 0.885, 0.32, 1.275) infinite;
   @keyframes wave {
     0% {
-      border-radius: 10px 30px 10px 30px;
+      border-radius: 10% 10%;
     }
-    20% {
-      border-radius: 10px 30px 10px 30px;
+    25% {
+      border-radius: 30% 50%;
     }
-    40% {
-      border-radius: 20px 20px 20px 20px;
+    50% {
+      border-radius: 70% 70%;
     }
-    60% {
-      border-radius: 20px 20px 20px 20px;
-    }
-    80% {
-      border-radius: 30px 10px 30px 10px;
+    75% {
+      border-radius: 50% 30%;
     }
     100% {
-      border-radius: 10px 30px 10px 30px;
+      border-radius: 10% 10%;
     }
   }
   @keyframes spin {
