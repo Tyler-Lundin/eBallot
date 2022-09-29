@@ -1,9 +1,14 @@
 import mongoose, { Schema } from 'mongoose'
-import { IComment } from '../types'
+import { IComment, reactions } from '../types'
 
 const commentSchema = new Schema<IComment>(
   {
-    parent: {
+    userID: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'User',
+    },
+    parentID: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: ['Ballot', 'Comment', 'User'],
@@ -13,12 +18,7 @@ const commentSchema = new Schema<IComment>(
       enum: ['ballot', 'comment', 'user'],
       required: true,
     },
-    userID: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      ref: 'User',
-    },
-    children: [
+    childrenIDs: [
       {
         type: Schema.Types.ObjectId,
         ref: 'Comment',
@@ -29,10 +29,15 @@ const commentSchema = new Schema<IComment>(
       required: true,
       minlength: 1,
     },
+    commentStats: {
+      totalReactions: {
+        type: Number,
+        default: 0,
+      },
+    },
     reactions: [
       {
-        type: Schema.Types.ObjectId,
-        ref: 'Reaction',
+        type: Array<reactions>(),
       },
     ],
   },
