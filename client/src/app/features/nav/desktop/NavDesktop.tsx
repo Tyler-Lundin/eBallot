@@ -1,10 +1,10 @@
 import styled from 'styled-components'
-import NavMenu from './NavMenuDesktop'
+import NavMenuDesktop from './NavMenuDesktop'
 
 const NavDesktop = () => {
   return (
     <CONTAINER id='nav-container'>
-      <NavMenu />
+      <NavMenuDesktop />
     </CONTAINER>
   )
 }
@@ -17,6 +17,4 @@ const CONTAINER = styled.div`
   left: 0;
   z-index: 999;
   width: 100vw;
-  background-color: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
 `
