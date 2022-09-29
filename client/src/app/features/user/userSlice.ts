@@ -3,13 +3,46 @@ import { error, IUser } from '../../../types'
 import { getUser } from '../../api/user.api'
 
 export interface IUserState {
-  user: IUser | null
+  user: IUser
   loading: boolean
   error: error
 }
 
-const initialState = {
-  user: null,
+const initialState: IUserState = {
+  user: {
+    userStats: {
+      ballotStats: {
+        totalVotes: 0,
+        totalComments: 0,
+        totalReactions: 0,
+      },
+      commentStats: {
+        totalReplies: 0,
+        totalReactions: 0,
+      },
+      reactionStats: {
+        totalReactions: 0,
+      },
+      friendStats: {
+        totalFriends: 0,
+        totalMessages: 0,
+      },
+      viewCount: 0,
+    },
+    username: '',
+    email: '',
+    phoneNumber: '',
+    profilePhotoURL: '',
+    ballots: [],
+    chats: [],
+    comments: [],
+    reactions: [],
+    requests: [],
+
+    votes: [],
+    createdAt: null,
+    updatedAt: null,
+  },
   loading: false,
   error: null,
 }
