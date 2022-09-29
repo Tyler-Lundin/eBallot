@@ -1,10 +1,17 @@
 import { Request, Response } from 'express'
+import asyncHandler from 'express-async-handler'
+import User from '../models/user.model'
+import decodeAuthToken from '../util/decodeAuthToken'
 
-export const getProfile = async (req: Request, res: Response) => {
-  res.status(200).json({
-    message: 'get Profile',
-  })
-}
+export const getUser = asyncHandler(async (req: Request, res: Response) => {
+  const { _id, username, email } = decodeAuthToken(req.cookies.authToken)
+  const user = await User.findById(_id, { password: 0 })
+  if (user) {
+    res.status(200).json({ user })
+  }
+
+  res.status(404).json({ message: 'User not found' })
+})
 
 export const addFriend = async (req: Request, res: Response) => {
   res.status(200).json({
