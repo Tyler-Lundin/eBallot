@@ -24,7 +24,7 @@ const LINKS = styled.ul`
 
 const LINK = styled(Link)`
   text-decoration: none;
-  color: black;
+  color: white;
   width: 100%;
   text-align: center;
   transition: 100ms;
@@ -35,11 +35,10 @@ const LINK_CONTAINER = styled.li`
   box-sizing: border-box;
   display: grid;
   place-items: center;
-  /* box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1); */
   :hover {
-    background-color: black;
+    background-color: rgba(20, 20, 20, 0.1);
   }
   :hover ${LINK} {
-    color: white;
+    color: #7141be;
   }
 `

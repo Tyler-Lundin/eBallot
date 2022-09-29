@@ -31,5 +31,6 @@ const HEADER = styled.div`
   h1 {
     font-size: 1.5rem;
     font-weight: 700;
+    color: white;
   }
 `
