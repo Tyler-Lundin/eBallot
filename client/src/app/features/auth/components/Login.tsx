@@ -17,6 +17,7 @@ const Login = () => {
               {field.label}
             </LABEL>
             <INPUT
+              autoComplete='off'
               onFocus={() => handleFocus(field.name)}
               onBlur={() => handleBlur(field.name)}
               value={field.value}
@@ -54,12 +55,16 @@ const LOGIN_FORM = styled.form`
   animation: ${fadeIn} 500ms ease-in-out forwards;
   border-radius: 10px;
   padding: 1rem;
+  box-sizing: border-box;
   display: grid;
   grid-template-rows: 60px;
   align-items: center;
   overflow: hidden;
   position: relative;
   transition: 250ms;
+  @media (max-width: 500px) {
+    width: 100%;
+  }
 `
 
 const GROUP = styled.section`
