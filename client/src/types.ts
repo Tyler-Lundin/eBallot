@@ -38,7 +38,7 @@ export interface IBallot {
   userID: userID
   question: string
   options: options
-  commentIDs: commentIDs
+  comments: comments
   expiresAt: expiresAt
   createdAt: createdAt
   updatedAt: updatedAt
@@ -50,7 +50,7 @@ export interface IComment {
   userID: userID
   parentID: parentID
   parentType: parentType
-  childrenIDs: commentIDs
+  children: comments
   comment: comment
   reactions: reactions
   createdAt: createdAt
@@ -61,8 +61,8 @@ export interface IChat {
   _id: chatID
   chatStats: chatStats
   chatName: chatName
-  messageIDs: messageIDs
-  userIDs: userIDs
+  messages: messages
+  users: users
 }
 
 export interface IFriend {
@@ -71,7 +71,7 @@ export interface IFriend {
   interactions: interactions
   isFavorite: isFavorite
   nickname: nickname
-  messageIDs: messageIDs
+  messages: messages
   createdAt: createdAt
   updatedAt: updatedAt
 }
@@ -102,21 +102,21 @@ export interface IRequest {
 }
 
 export interface IUser {
-  _id: userID
+  _id?: userID
   userStats: userStats
   username: username
   email: email
-  password: password
+  password?: password
   phoneNumber: phoneNumber
   profilePhotoURL: profilePhotoURL
-  ballotIDs: ballotIDs
-  chatIDs: chatIDs
-  commentIDs: commentIDs
-  reactionIDs: reactionIDs
-  requestIDs: requests
-  voteIDs: voteIDs
-  createdAt: createdAt
-  updatedAt: updatedAt
+  ballots: ballots
+  chats: chats
+  comments: comments
+  reactions: reactions
+  requests: requests
+  votes: votes
+  createdAt: createdAt | null
+  updatedAt: updatedAt | null
 }
 
 export interface IVote {
@@ -148,40 +148,35 @@ export type username = string
 
 // BALLOT
 export type ballotID = string
-export type ballotIDs = ballotID[]
-export type ballots = IBallot[]
-export type option = { index: optionIndex; title: title; voteIDs: voteIDs }
+export type ballots = ballotID[] | IBallot[]
+
+export type option = { index: optionIndex; title: title; voteIDs: votes }
 export type optionIndex = number
 export type options = option[]
 export type voteID = string
-export type voteIDs = voteID[]
-export type votes = IVote[]
+export type votes = voteID[] | IVote[]
 export type voterIDs = userID[]
 
 // COMMENT
 export type comment = string
 export type commentID = string
-export type commentIDs = commentID[]
-export type comments = IComment[]
+export type comments = commentID[] | IComment[]
 export type parentID = ballotID | commentID | userID
 export type parentType = 'ballot' | 'comment' | 'user'
 
 // CHAT
 export type chatID = string
-export type chatIDs = chatID[]
-export type chats = IChat[]
+export type chats = chatID[] | IChat[]
 
 // MESSAGE
 export type messageID = string
-export type messageIDs = messageID[]
-export type messages = IMessage[]
+export type messages = messageID[] | IMessage[]
 export type sender = string
 export type MessageStatus = 'sent' | 'received' | 'read' | 'edited' | 'unsent'
 
 // REACTION
 export type reactionID = string
-export type reactionIDs = reactionID[]
-export type reactions = IReaction[]
+export type reactions = reactionID[] | IReaction[]
 
 // REQUEST
 export type receiver = string
@@ -191,8 +186,7 @@ export type requests = IRequest[]
 
 // USER
 export type userID = string
-export type userIDs = userID[]
-export type users = IUser[]
+export type users = userID[] | IUser[]
 
 export type interactions = number
 export type isFavorite = boolean
