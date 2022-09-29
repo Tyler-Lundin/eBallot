@@ -1,15 +1,13 @@
-import mongoose, { Schema, SchemaTimestampsConfig } from 'mongoose'
+import mongoose, { Schema } from 'mongoose'
+import { IMessage } from '../types'
 
-type MessageStatus = 'sent' | 'received' | 'read'
-
-export interface IMessage extends mongoose.Document {
-  sender: Schema.Types.ObjectId
-  recipient: Schema.Types.ObjectId
-  status: MessageStatus
-  message: string
-  createdAt: SchemaTimestampsConfig['createdAt']
-  updatedAt: SchemaTimestampsConfig['updatedAt']
-}
+// sender: userID
+// chatID: chatID
+// status: MessageStatus
+// message: message
+// reactionIDs: reactionIDs
+// createdAt: createdAt
+// updatedAt: updatedAt
 
 const messageSchema = new Schema<IMessage>(
   {
@@ -18,14 +16,14 @@ const messageSchema = new Schema<IMessage>(
       ref: 'User',
       required: true,
     },
-    recipient: {
+    chatID: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'Chat',
       required: true,
     },
     status: {
       type: String,
-      enum: ['sent', 'received', 'read'],
+      enum: ['sent', 'received', 'read', 'edited', 'unsent'],
       required: true,
       default: 'sent',
     },
@@ -33,6 +31,22 @@ const messageSchema = new Schema<IMessage>(
       type: String,
       required: true,
     },
+    reactions: [
+      {
+        parentID: {
+          type: Schema.Types.ObjectId,
+          ref: ['Ballot', 'Comment', 'User', 'Message'],
+        },
+        userID: {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+        },
+        reactionType: {
+          type: String,
+          enum: ['like', 'love', 'haha', 'wow', 'sad', 'angry'],
+        },
+      },
+    ],
   },
   {
     timestamps: true,
