@@ -11,7 +11,7 @@ import createAuthToken from '../util/createAuthToken'
 export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   const { username, password } = req.body
   const user = await User.findOne({ $or: [{ username }, { email: username }] })
-  if (user && (await bcrypt.compare(password, user.password))) {
+  if (user && (await bcrypt.compare(password, user.password as string))) {
     const authToken = createAuthToken(user)
     res.cookie('authToken', `BEARER ${authToken}`).json({ message: 'Login successful' })
   }
