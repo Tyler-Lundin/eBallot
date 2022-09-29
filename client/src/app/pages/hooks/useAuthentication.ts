@@ -6,7 +6,7 @@ const useAuthentication = () => {
   const { authenticated } = useAuthState()
   const navTo = useNavigate()
   useEffect(() => {
-    if (authenticated) navTo('/dashboard')
+    navTo(authenticated ? '/dashboard' : '/auth/login')
   }, [authenticated])
   return { authenticated }
 }
