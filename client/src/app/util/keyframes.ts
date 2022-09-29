@@ -33,4 +33,13 @@ const fadeOut = keyframes`
     }
 `
 
-export { fadeIn, fadeInOut, fadeOut }
+const slideDown = keyframes`
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+    `
+
+export { fadeIn, fadeInOut, fadeOut, slideDown }
