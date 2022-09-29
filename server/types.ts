@@ -9,50 +9,59 @@ export interface IErrors {
   [key: string]: string
 }
 export interface IBallot extends mongoose.Document {
+  ballotStats: ballotStats
   userID: userID
-  title: title
-  description: description
+  question: string
   options: options
-  comments: comments
+  commentIDs: commentIDs
   expiresAt: expiresAt
   createdAt: createdAt
   updatedAt: updatedAt
 }
 
 export interface IComment extends mongoose.Document {
+  commentStats: commentStats
+  userID: userID
   parentID: parentID
   parentType: parentType
-  userID: userID
-  replies: replies
+  childrenIDs: commentIDs
   comment: comment
   reactions: reactions
   createdAt: createdAt
   updatedAt: updatedAt
 }
 
+export interface IChat extends mongoose.Document {
+  chatStats: chatStats
+  chatName: chatName
+  messageIDs: messageIDs
+  userIDs: userIDs
+}
+
 export interface IFriend extends mongoose.Document {
   userID: userID
   matchPercentage: matchPercentage
-  interactionRate: interactionRate
+  interactions: interactions
   isFavorite: isFavorite
   nickname: nickname
-  messages: messages
+  messageIDs: messageIDs
   createdAt: createdAt
   updatedAt: updatedAt
 }
-
 export interface IMessage extends mongoose.Document {
-  sender: sender
-  receiver: receiver
+  sender: userID
+  chatID: chatID
+  status: MessageStatus
   message: message
+  reactions: reactions
   createdAt: createdAt
   updatedAt: updatedAt
 }
 
-export interface IReaction extends mongoose.Document {
+export interface IReaction {
   parentID: parentID
   userID: userID
-  reaction: reaction
+  reactionType: reactionTypes
 }
 
 export interface IRequest extends mongoose.Document {
@@ -64,18 +73,18 @@ export interface IRequest extends mongoose.Document {
 }
 
 export interface IUser extends mongoose.Document {
-  // personal information
+  userStats: userStats
+  username: username
   email: email
   password: password
   phoneNumber: phoneNumber
   profilePhotoURL: profilePhotoURL
-  username: username
-  // app data
-  ballots: ballots
-  comments: comments
+  ballotIDs: ballotIDs
+  chatIDs: chatIDs
+  commentIDs: commentIDs
   reactions: reactions
-  requests: requests
-  votes: votes
+  requestIDs: requestIDs
+  voteIDs: voteIDs
   createdAt: createdAt
   updatedAt: updatedAt
 }
@@ -83,60 +92,85 @@ export interface IUser extends mongoose.Document {
 export interface IVote extends mongoose.Document {
   userID: userID
   ballotID: ballotID
-  option: option
+  optionIndex: optionIndex
   createdAt: createdAt
   updatedAt: updatedAt
 }
 
-export type ballotID = Schema.Types.ObjectId
-export type ballots = IBallot[]
-export type replies = IComment[]
-export type comment = string
-export type commentID = Schema.Types.ObjectId
-export type comments = IComment[]
+// common
 export type createdAt = SchemaTimestampsConfig['createdAt']
+export type expiresAt = Date
+export type updatedAt = SchemaTimestampsConfig['updatedAt']
+
+export type chatName = string
 export type description = string
 export type email = string
-export type expiresAt = Date
-export type interactionRate = number
-export type isFavorite = boolean
-export type matchPercentage = number
 export type message = string
-export type messages = IMessage[]
 export type nickname = string
-export type options = option[]
-export type parentID = ballotID | commentID | userID
-export type parentType = 'ballot' | 'comment' | 'user'
 export type password = string
 export type phoneNumber = string
 export type profilePhotoURL = string
-export type reactionID = Schema.Types.ObjectId
-export type reactions = IReaction[]
-export type receiver = Schema.Types.ObjectId
-export type requestID = Schema.Types.ObjectId
-export type requests = IRequest[]
-export type sender = Schema.Types.ObjectId
 export type status = 'pending' | 'accepted' | 'rejected'
 export type title = string
-export type updatedAt = SchemaTimestampsConfig['updatedAt']
-export type userID = Schema.Types.ObjectId
 export type username = string
-export type users = IUser[]
+
+// BALLOT
+export type ballotID = Schema.Types.ObjectId
+export type ballotIDs = ballotID[]
+export type ballots = IBallot[]
+export type option = { index: optionIndex; title: title; voteIDs: voteIDs }
+export type optionIndex = number
+export type options = option[]
 export type voteID = Schema.Types.ObjectId
-export type voters = userID[]
+export type voteIDs = voteID[]
 export type votes = IVote[]
+export type voterIDs = userID[]
+
+// COMMENT
+export type comment = string
+export type commentID = Schema.Types.ObjectId
+export type commentIDs = commentID[]
+export type comments = IComment[]
+export type parentID = ballotID | commentID | userID
+export type parentType = 'ballot' | 'comment' | 'user'
+
+// CHAT
+export type chatID = Schema.Types.ObjectId
+export type chatIDs = chatID[]
+export type chats = IChat[]
+
+// MESSAGE
+export type messageID = Schema.Types.ObjectId
+export type messageIDs = messageID[]
+export type messages = IMessage[]
+export type sender = Schema.Types.ObjectId
+export type MessageStatus = 'sent' | 'received' | 'read' | 'edited' | 'unsent'
+
+// REACTION
+export type reactionID = Schema.Types.ObjectId
+export type reactions = IReaction[]
+
+// REQUEST
+export type receiver = Schema.Types.ObjectId
+export type requestID = Schema.Types.ObjectId
+export type requestIDs = requestID[]
+export type requests = IRequest[]
+
+// USER
+export type userID = Schema.Types.ObjectId
+export type userIDs = userID[]
+export type users = IUser[]
+
+export type interactions = number
+export type isFavorite = boolean
+export type matchPercentage = number
 
 export type BallotOption = {
   title: title
-  voters: voters
+  voterIDs: voterIDs
 }
 
-export type option = {
-  title: title
-  voters: voters
-}
-
-export type reaction =
+export type reactionTypes =
   | 'like'
   | 'dislike'
   | 'laugh'
@@ -146,3 +180,45 @@ export type reaction =
   | 'wow'
   | 'confused'
   | 'hmm'
+
+export type ballotStats = {
+  totalVotes: number
+  totalComments: number
+  totalReactions: number
+}
+
+export type commentStats = {
+  totalReplies: number
+  totalReactions: number
+}
+
+export type chatStats = {
+  totalMessages: number
+  totalUsers: number
+}
+
+export type reactionStats = {
+  totalReactions: number
+}
+
+export type friendStats = {
+  totalFriends: number
+  totalMessages: number
+}
+
+export type userStats = {
+  ballotStats: ballotStats
+  commentStats: commentStats
+  reactionStats: reactionStats
+  friendStats: friendStats
+  viewCount: number
+}
+
+export type appStats = {
+  totalUsers: number
+  totalBallots: number
+  totalComments: number
+  totalReactions: number
+  totalFriends: number
+  totalMessages: number
+}
