@@ -9,9 +9,9 @@ declare global {
   namespace Express {
     interface Request {
       user?: Partial<IUser>
-      journal?: Partial<IsJournal>
       userID?: string
-      journalID?: string
+      authToken?: string
+      sessionID?: string
     }
   }
 }
