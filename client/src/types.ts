@@ -1,3 +1,5 @@
+// CLIENT TYPES
+
 export interface IErrors {
   [key: string]: string
 }
@@ -66,8 +68,9 @@ export interface IChat {
 }
 
 export interface IFriend {
-  _id: userID
-  matchPercentage: matchPercentage
+  userID: userID
+  profilePhotoURL: profilePhotoURL
+  matchPercentage: matchPercentage // based on user's answers to questions
   interactions: interactions
   isFavorite: isFavorite
   nickname: nickname
@@ -101,6 +104,17 @@ export interface IRequest {
   updatedAt: updatedAt
 }
 
+export interface INotification {
+  _id: notificationID
+  notificationType: notificationType
+  message: message
+  sender: sender
+  receiver: receiver
+  status: status
+  createdAt: createdAt
+  updatedAt: updatedAt
+}
+
 export interface IUser {
   _id?: userID
   userStats: userStats
@@ -112,6 +126,7 @@ export interface IUser {
   ballots: ballots
   chats: chats
   comments: comments
+  friends: friends
   reactions: reactions
   requests: requests
   votes: votes
@@ -126,6 +141,12 @@ export interface IVote {
   optionIndex: optionIndex
   createdAt: createdAt
   updatedAt: updatedAt
+}
+
+export interface IFriends {
+  friendRequests: friendRequests
+  friends: friends
+  favoriteFriends: favoriteFriends
 }
 
 // common
@@ -155,7 +176,7 @@ export type optionIndex = number
 export type options = option[]
 export type voteID = string
 export type votes = voteID[] | IVote[]
-export type voterIDs = userID[]
+export type voters = userID[]
 
 // COMMENT
 export type comment = string
@@ -168,11 +189,29 @@ export type parentType = 'ballot' | 'comment' | 'user'
 export type chatID = string
 export type chats = chatID[] | IChat[]
 
+// FRIENDS
+export type friendRequests = IRequest[]
+export type friends = IFriend[]
+export type favoriteFriends = IFriend[]
+export type isFavorite = boolean
+export type matchPercentage = number
+export type interactions = number
+
 // MESSAGE
 export type messageID = string
 export type messages = messageID[] | IMessage[]
 export type sender = string
 export type MessageStatus = 'sent' | 'received' | 'read' | 'edited' | 'unsent'
+
+// NOTIFICATION
+export type notificationID = string
+export type notificationType =
+  | 'friendRequest'
+  | 'comment'
+  | 'reaction'
+  | 'chatRequest'
+  | 'ballotStatus'
+  | 'message'
 
 // REACTION
 export type reactionID = string
@@ -188,13 +227,9 @@ export type requests = IRequest[]
 export type userID = string
 export type users = userID[] | IUser[]
 
-export type interactions = number
-export type isFavorite = boolean
-export type matchPercentage = number
-
 export type BallotOption = {
   title: title
-  voterIDs: voterIDs
+  voters: voters
 }
 
 export type reactionTypes =
@@ -225,7 +260,17 @@ export type chatStats = {
 }
 
 export type reactionStats = {
-  totalReactions: number
+  totalReactions: {
+    like: number
+    dislike: number
+    laugh: number
+    cry: number
+    angry: number
+    heart: number
+    wow: number
+    confused: number
+    hmm: number
+  }
 }
 
 export type friendStats = {
